@@ -12,6 +12,16 @@ public class PlayerController : MonoBehaviour {
 	public Text countText;
 	public Text winText;
 
+	// We are making this a public AudioSource so we can edit this in the inspector
+	public AudioSource SfxTrack;
+	public AudioSource MusicTrack;
+
+	public AudioClip pickupSfx;
+	public AudioClip gameMusic;
+	public AudioClip winMusic;
+
+	private AudioClip nameOfAudioClip;
+
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	private Rigidbody rb;
 	private int count;
@@ -30,6 +40,11 @@ public class PlayerController : MonoBehaviour {
 
 		// Set the text property of our Win Text UI to an empty string, making the 'You Win' (game over message) blank
 		winText.text = "";
+
+		MusicTrack.clip = gameMusic;
+		MusicTrack.volume = 0.6f;
+		MusicTrack.loop = true;
+		MusicTrack.Play();
 	}
 
 	// Each physics step..
@@ -62,6 +77,11 @@ public class PlayerController : MonoBehaviour {
 
 			// Run the 'SetCountText()' function (see below)
 			SetCountText ();
+
+			SfxTrack.clip = pickupSfx;
+			SfxTrack.pitch = Random.Range(0.9f, 1.1f);
+			SfxTrack.volume = 0.5f;
+			SfxTrack.Play();
 		}
 	}
 
@@ -76,6 +96,31 @@ public class PlayerController : MonoBehaviour {
 		{
 			// Set the text value of our 'winText'
 			winText.text = "You Win!";
-		}
+
+            MusicTrack.clip = winMusic;
+            MusicTrack.volume = 0.3f;
+            MusicTrack.loop = true;
+            MusicTrack.Play();
+        }
 	}
+
+	// This is a custom made void function that contains some helpful
+	// lines of code for audio programming
+	void Examples() {
+
+		// Change the track of your AudioSource (in this case, named MusicTrack)
+		MusicTrack.clip = nameOfAudioClip;
+
+		// Set the volume of the clip set to your MusicTrack (between 0 - 1f)
+		MusicTrack.volume = 0.8f;
+
+		// Set the MusicTrack to looping
+		MusicTrack.loop = true;
+
+		// Play the clip set to your MusicTrack
+		MusicTrack.Play();
+
+		// Add random range pitch variation to a sound (set the min/max values)
+		SfxTrack.pitch = Random.Range(0.9f, 1.1f);
+    }
 }
